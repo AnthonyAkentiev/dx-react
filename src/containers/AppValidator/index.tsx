@@ -8,6 +8,7 @@ import MetamaskProvider from 'integrations/metamask'
 import { updateMainAppState, resetMainAppState, updateProvider, initDutchX } from 'actions'
 
 import { State } from 'types'
+// TODO: Why is not this action with the other ones :)
 import { getTokenList } from 'actions'
 
 const inBrowser = typeof navigator !== 'undefined' && typeof navigator.onLine === 'boolean'
@@ -28,6 +29,12 @@ const addListeners = (listeners: string[], actors: EventListenerOrEventListenerO
   listeners.forEach((l, i) => window.addEventListener(l, actors[i]))
 }
 
+// TODO: The name can be confusing:
+//  - it has part of the initializaion logic
+//  - it seams that also handle changes in connection state
+//  - it does the pooling
+//  - Init dx
+//  - ..
 class AppValidator extends React.Component<any> {
   dataPollerID: any | NodeJS.Timer
   state = {
@@ -38,6 +45,8 @@ class AppValidator extends React.Component<any> {
 
   async componentWillMount() {
     // const provider = MetamaskProvider,
+    // TODO: I don't understand this part, do we get the actions from `actions` or
+    //      are they props?
     const { network, updateMainAppState, updateProvider, resetMainAppState, getTokenList, initDutchX } = this.props
 
     try {

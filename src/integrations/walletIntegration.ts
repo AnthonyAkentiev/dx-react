@@ -16,6 +16,8 @@ import { timeoutCondition } from 'utils/helpers'
 // import { IPFS_TOKENS_HASH } from 'globals'
 
 export default async function walletIntegration(store: Store<any>) {
+  // TODO: I find this function a bit cumbersome to read, it looks like metamask
+  //      is hardcoded, instead of used the abstraction webProvider
   const { dispatch }: { dispatch: Dispatch<any>, getState: () => State } = store
   // wraps actionCreator in dispatch
   const dispatchProviderAction = (actionCreator: any) =>
@@ -79,6 +81,7 @@ export default async function walletIntegration(store: Store<any>) {
 
     dispatchers.updateProvider(provider.providerName, { ...newState })
   } catch (error) {
+    // TODO: Shouldn't we handle this error?
     console.error(error.message || error)
   }
 }

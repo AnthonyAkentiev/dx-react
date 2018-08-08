@@ -18,6 +18,9 @@ const fireListeners = async () => {
   console.log('FIRING LISTENERS')
 
   const { web3 } = await promisedWeb3
+  // TODO: Wouldn't be more clear to do just a if?
+  // TODO: Also, When is `web3.currentProvider.publicConfigStore` not avaliable?
+  //       should we have a fallback functionality?
   web3.currentProvider                    &&
   web3.currentProvider.publicConfigStore  &&
   web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress, networkVersion }: any) => {
@@ -59,11 +62,15 @@ const fireListeners = async () => {
         [[LISTENER]] --> NETWORK CHANGE DETECTED, GRABBING NEW NETWORK TOKEN LIST
       `)
 
+      // TODO: Would it make sense to remove bussiness logic from the event
+      // listener, so the event listener responsability is to transform some
+      // interesting events into action calls
       localForage.removeItem('defaultTokens')
     }
   })
 
   // TEMP SAMPLE USAGE
+  // TODO: I understand this
   watch(async (e, bl) => {
     console.log(' ==> 2: Block watcher fired')
     if (e) return console.error('Chain watching Error', e)

@@ -19,6 +19,8 @@ Array.prototype.last = function getLast() {
 const rootElement = document.getElementById('root')
 
 const renderApp = async () => {
+  // TODO: fireListeners is async, but the errors are not being handled, I think
+  //       we should do either an await or a catch
   // fire provider network change listener
   fireListeners()
   // load localForage settings
@@ -88,6 +90,7 @@ async function blockIf() {
     disabledReason = 'geoblock'
   } else {
     blocked = await netBlockedPromise
+    // TODO: We shouln't ommit curly braces. Maybe we should review the lint rules used
     if (blocked) disabledReason = 'networkblock'
   }
 
@@ -95,6 +98,7 @@ async function blockIf() {
     window.history.replaceState(null, '', '/')
     rootElement.innerHTML = ReactDOMServer.renderToStaticMarkup(<App disabled disabledReason={disabledReason} networkAllowed={ALLOWED_NETWORK}/>)
   } else {
+    // TODO: Shouldn't we display a user friendly error in the catch?
     await renderApp().catch(console.error)
   }
 }

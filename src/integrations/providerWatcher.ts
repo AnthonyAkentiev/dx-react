@@ -16,6 +16,8 @@ export const watcherLogger = ({ logType = 'log', status, info, updateState }: { 
 let prevTime: number
 
 // Fired on setInterval every 10 seconds
+// TODO: I think it' a good idea to call the function as the file, if we
+//    export a single function
 const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppState, updateProvider, resetMainAppState }: any) => {
 
   const getAccount = async (provider: WalletProvider): Promise<Account> => {
@@ -41,28 +43,28 @@ const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppS
     provider.state.timestamp = prevTime
 
     const [account, network, timestamp] = await Promise.all<Account, ETHEREUM_NETWORKS, number>([
-          getAccount(provider),
-          getNetwork(provider),
-          getTime(),
-        ]),
-        balance = account && await getBalance(provider, account),
-        available = provider.walletAvailable,
-        unlocked = !!(available && account),
-        newState = { account, network, balance, available, unlocked, timestamp }
+        getAccount(provider),
+        getNetwork(provider),
+        getTime(),
+      ]),
+      balance = account && await getBalance(provider, account),
+      available = provider.walletAvailable,
+      unlocked = !!(available && account),
+      newState = { account, network, balance, available, unlocked, timestamp }
 
       // if data changed
     if (shallowDifferent(provider.state, newState)) {
-        console.log('app state is different')
-        console.log('was: ', newState)
-        console.log('now: ', provider.state)
+      console.log('app state is different')
+      console.log('was: ', newState)
+      console.log('now: ', provider.state)
 
         // reset module timestamp with updated timestamp
-        prevTime = timestamp
+      prevTime = timestamp
         // dispatch action with updated provider state
-        updateProvider({ provider: provider.providerName, ...newState })
+      updateProvider({ provider: provider.providerName, ...newState })
         // check if initial load or wallet locked
 
-        if (!unlocked) {
+      if (!unlocked) {
           watcherLogger({
             logType: 'warn',
             status: 'WALLET LOCKED',
@@ -72,7 +74,7 @@ const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppS
           // if wallet locked, throw
           throw 'Wallet locked'
         }
-        else {
+      else {
           watcherLogger({
             logType: 'warn',
             status: 'CONNECTED + WALLET UNLOCKED',
@@ -81,7 +83,7 @@ const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppS
           })
           await updateMainAppState()
         }
-      }
+    }
   } catch (err) {
     console.warn(err)
       // if error
@@ -91,10 +93,10 @@ const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppS
 
     if (provider.walletAvailable) {
         // disable internal provider
-        provider.state.unlocked = false
+      provider.state.unlocked = false
         // and dispatch action with { available: false }
-        updateProvider({ provider })
-      }
+      updateProvider({ provider })
+    }
     throw err
   }
 }

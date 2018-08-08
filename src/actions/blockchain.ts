@@ -237,6 +237,7 @@ export const setApprovedTokensAndAvailableAuctions = (tokenList: DefaultTokenLis
 }
 
 export const getTokenList = (network?: number | string) => async (dispatch: Dispatch<any>, getState: () => State): Promise<void> => {
+  // TODO: localForage is a typo, right? Is localStorage
   let [defaultTokens, customTokens, customListHash] = await Promise.all<{ hash: string, tokens: DefaultTokens}, DefaultTokens['elements'], string>([
     localForage.getItem('defaultTokens'),
     localForage.getItem('customTokens'),
@@ -254,8 +255,21 @@ export const getTokenList = (network?: number | string) => async (dispatch: Disp
     network = network || window.web3.version.network || 'NONE'
 
     // user has tokens in localStorage BUT hash is not updated
+    // TODO: Add always curly braces
     if (defaultTokens) await localForage.removeItem('defaultTokens')
 
+    // TODO: This logic:
+    //  * Can be refactorized
+    //  * Also, I think it doesn't need to be so complicated, we don't need IPFS,
+    //    and it's just a token list per network
+    //  * We also don't need custom tokens, I understand that is like this
+    //    because this part changed 50 times :)
+    //  * Is strange how network can be both:
+    //    - a string with the network id (i.e. '4')
+    //    - a literal with the name of the network (i.e. 'RINKEBY')
+    //  * In my opinion, we can leave it commented if you want to keep near by
+    //    this logic in case it comes back the requirements, but we should do a
+    //    very small refactorized function that just loads the tokens per network
     switch (network) {
       case '4':
       case ETHEREUM_NETWORKS.RINKEBY:

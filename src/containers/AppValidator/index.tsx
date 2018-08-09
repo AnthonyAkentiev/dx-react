@@ -24,12 +24,15 @@ class AppValidator extends React.Component<any> {
   state = {
     online: inBrowser ? navigator.onLine : true,
     SET_UP_COMPLETE: true,
+    loading: false,
     error: '',
   }
 
   async componentWillMount() {
     // const provider = MetamaskProvider,
     const { network, updateMainAppState, updateProvider, resetMainAppState, getTokenList, initDutchX } = this.props
+
+    this.setState({ loading: true })
 
     try {
       addListeners(['online', 'offline'], [this.connect, this.disconnect])
@@ -76,6 +79,7 @@ class AppValidator extends React.Component<any> {
       }
       this.startPolling(3000)
     }
+    this.setState({ loading: false })
   }
 
   componentWillUnmount() {
@@ -135,7 +139,7 @@ class AppValidator extends React.Component<any> {
 
   render() {
     const { children, unlocked } = this.props
-    return this.state.online && unlocked && this.state.SET_UP_COMPLETE ? children : this.renderOfflineApp(this.state)
+    return this.state.loading || (this.state.online && unlocked && this.state.SET_UP_COMPLETE) ? children : this.renderOfflineApp(this.state)
   }
 }
 

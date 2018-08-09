@@ -64,8 +64,8 @@ export enum AuctionStatus {
   ENDED = 'ended',
 }
 
-export enum ProviderName { METAMASK = 'METAMASK', MIST = 'MIST' }
-export const supportedProviders = new Set(Object.keys(ProviderName)) as Set<ProviderName>
+export enum ProviderName { METAMASK = 'MetamaskInpageProvider', MIST = 'MIST' }
+export const supportedProviders = new Set(Object.values(ProviderName)) as Set<ProviderName>
 
 export const NETWORK_TIMEOUT = process.env.NODE_ENV === 'development' ? 200000 : 200000
 

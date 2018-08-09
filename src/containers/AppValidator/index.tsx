@@ -150,7 +150,7 @@ const mapState = (state: State) => {
   return {
     activeProvider,
     network: provider ? provider.network : 'UNKNOWN NETWORK',
-    unlocked: provider.unlocked,
+    unlocked: provider ? provider.unlocked : false,
   }
 }
 

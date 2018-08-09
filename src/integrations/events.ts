@@ -21,7 +21,11 @@ const fireListeners = async () => {
   web3.currentProvider                    &&
   web3.currentProvider.publicConfigStore  &&
   web3.currentProvider.publicConfigStore.on('update', ({ selectedAddress, networkVersion }: any) => {
-    const { currentAccount: currentAccountFromState, providers: { METAMASK: { network: networkFromState } } } = store.getState().blockchain
+    const {
+      currentAccount: currentAccountFromState,
+      activeProvider,
+      providers: { [activeProvider]: { network: networkFromState } },
+    } = store.getState().blockchain
     const { defaultTokenList } = store.getState().tokenList
 
     console.log(`

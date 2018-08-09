@@ -57,28 +57,28 @@ const providerInitAndWatcher = async (provider: WalletProvider, { updateMainAppS
         // reset module timestamp with updated timestamp
       prevTime = timestamp
         // dispatch action with updated provider state
-      updateProvider({ provider: provider.providerName, ...newState })
+      updateProvider({ provider: provider.name, ...newState })
         // check if initial load or wallet locked
 
       if (!unlocked) {
-          watcherLogger({
+        watcherLogger({
             logType: 'warn',
             status: 'WALLET LOCKED',
             info: 'Please unlock your wallet provider',
             updateState: false,
           })
           // if wallet locked, throw
-          throw 'Wallet locked'
-        }
+        throw 'Wallet locked'
+      }
       else {
-          watcherLogger({
+        watcherLogger({
             logType: 'warn',
             status: 'CONNECTED + WALLET UNLOCKED',
             info: 'Web3 provider connected + wallet unlocked',
             updateState: true,
           })
-          await updateMainAppState()
-        }
+        await updateMainAppState()
+      }
     }
   } catch (err) {
     console.warn(err)

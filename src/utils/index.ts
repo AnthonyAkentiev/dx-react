@@ -1,25 +1,3 @@
-import Web3 from 'web3'
-
-export const getDutchXOptions = (provider: any) => {
-  console.log('FIRING getDutchXOptions')
-  const opts: any = {}
-
-  if (provider && provider.name === WALLET_PROVIDER.METAMASK) {
-    // Inject window.web3
-    opts.ethereum = window.web3.currentProvider
-  } else if (provider && provider === WALLET_PROVIDER.PARITY) {
-    // Inject window.web3
-    opts.ethereum = window.web3.currentProvider
-  } else {
-    // Default remote node
-    opts.ethereum = new Web3(
-      new Web3.providers.HttpProvider(`${process.env.ETHEREUM_URL}`),
-    ).currentProvider
-  }
-
-  return opts
-}
-
 export const code2Network = (code: '1' | '4' | '42') => {
   switch (code) {
     case '1':
@@ -76,7 +54,7 @@ import { logDecoder } from 'ethjs-abi'
 
 import { DefaultTokenList, ProviderInterface, DefaultTokenObject, Receipt, ABI, Web3EventLog } from 'api/types'
 import { Account } from 'types'
-import { ETH_ADDRESS, WALLET_PROVIDER, DEFAULT_ERROR, CANCEL_TX_ERROR, NO_INTERNET_TX_ERROR, LOW_GAS_ERROR } from 'globals'
+import { ETH_ADDRESS, DEFAULT_ERROR, CANCEL_TX_ERROR, NO_INTERNET_TX_ERROR, LOW_GAS_ERROR } from 'globals'
 
 export const windowLoaded = new Promise((accept, reject) => {
   if (typeof window === 'undefined') {

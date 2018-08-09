@@ -1,6 +1,6 @@
 import { State, Provider } from 'types'
 import { ProviderName } from 'globals'
-import { find, orderBy } from 'lodash'
+// import { find, orderBy } from 'lodash'
 
 export const selector = (state: State) => state.blockchain
 
@@ -11,12 +11,16 @@ export const selector = (state: State) => state.blockchain
 // TODO: consider changing activeProvider dynamically in store on UPDATE_PROVIDER action
 // that way we won't even need find/setActiveProvider in actions/blockchain
 export const findDefaultProvider = (state: State): Provider => {
-  const providers = orderBy(state.blockchain.providers, ['priority'], ['desc'])
-  // @ts-ignore
-  return find(providers, {
-    name: 'METAMASK',
-    // loaded: true, available: true,
-  })
+  const { providers } = state.blockchain
+
+  return providers[Object.keys(providers)[0]]
+  // const providers = orderBy(state.blockchain.providers, ['priority'], ['desc'])
+  // console.log('providers: ', providers);
+  // // @ts-ignore
+  // return find(providers, {
+  //   name: 'METAMASK',
+  //   // loaded: true, available: true,
+  // })
 }
 
 export const getActiveProvider = (state: State): ProviderName => selector(state).activeProvider

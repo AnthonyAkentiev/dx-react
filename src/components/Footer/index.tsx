@@ -31,8 +31,8 @@ const Footer = ({ network }: FooterProps) =>
         </div>
     </footer>
 
-const mapState = ({ blockchain: { providers } }: State) => ({
-  network: providers.METAMASK && providers.METAMASK.network ? providers.METAMASK.network : 'UNKNOWN NETWORK',
+const mapState = ({ blockchain: { providers, activeProvider } }: State) => ({
+  network: providers[activeProvider] && providers[activeProvider].network ? providers[activeProvider] && providers[activeProvider].network : 'UNKNOWN NETWORK',
 })
 
 export default connect(mapState)(Footer)

@@ -1,5 +1,5 @@
 import { Account, Balance, State } from 'types'
-import { ETHEREUM_NETWORKS, WALLET_PROVIDER } from 'globals'
+import { ETHEREUM_NETWORKS } from 'globals'
 
 export interface ProviderState {
   account: Account,
@@ -11,9 +11,9 @@ export interface ProviderState {
 }
 
 export interface WalletProvider {
-  providerName: WALLET_PROVIDER,
+  // providerName: WALLET_PROVIDER,
   // controls which provider is considered default
-  priority: number,
+  // priority: number,
   // internal flag determining if rovider was even injected
   walletAvailable?: boolean,
   // called first in initialization
@@ -22,6 +22,7 @@ export interface WalletProvider {
   initialize(): void,
   state?: ProviderState,
   web3?: any,
+  name: string | null,
 }
 
 export interface ConnectedInterface {

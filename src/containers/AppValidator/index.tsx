@@ -2,7 +2,7 @@ import React from 'react'
 import { connect } from 'react-redux'
 
 import providerWatcher from 'integrations/providerWatcher'
-import MetamaskProvider from 'integrations/metamask'
+import Provider from 'integrations/metamask'
 
 import { updateMainAppState, resetMainAppState, updateProvider, initDutchX } from 'actions'
 
@@ -45,7 +45,7 @@ class AppValidator extends React.Component<any> {
         await getTokenList(network)
 
         // Initiate Provider
-        await providerWatcher(MetamaskProvider, { updateMainAppState, updateProvider, resetMainAppState })
+        await providerWatcher(Provider, { updateMainAppState, updateProvider, resetMainAppState })
 
         // initialise basic user state
         await initDutchX()
@@ -121,7 +121,7 @@ class AppValidator extends React.Component<any> {
     const { updateMainAppState, updateProvider, resetMainAppState } = this.props
 
     console.log('AppValidator: Polling started')
-    return this.dataPollerID = setInterval(() => providerWatcher(MetamaskProvider, { updateMainAppState, updateProvider, resetMainAppState }), pollTime)
+    return this.dataPollerID = setInterval(() => providerWatcher(Provider, { updateMainAppState, updateProvider, resetMainAppState }), pollTime)
   }
 
   stopPolling = () => (console.log('AppValidator: Polling stopped'), clearInterval(this.dataPollerID))
@@ -141,8 +141,8 @@ class AppValidator extends React.Component<any> {
 
 const mapState = ({ blockchain: { activeProvider, providers } }: State) => ({
   activeProvider,
-  network: providers.METAMASK && providers.METAMASK.network,
-  unlocked: providers.METAMASK && providers.METAMASK.unlocked,
+  network: providers[activeProvider] && providers[activeProvider].network,
+  unlocked: providers[activeProvider] && providers[activeProvider].unlocked,
 })
 
 export default connect(mapState, {

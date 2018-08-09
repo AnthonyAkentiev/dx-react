@@ -6,7 +6,7 @@ import {
 } from 'actions'
 
 import { State, Balance } from 'types'
-import MetamaskProvider from './metamask'
+import Provider from './metamask'
 import { WalletProvider } from 'integrations/types'
 import { getTime } from 'api'
 import { promisify, timeoutCondition } from 'utils'
@@ -62,20 +62,21 @@ export default async function walletIntegration(store: Store<any>) {
       unlocked = !!(available && account),
       newState = { account, network, balance, available, unlocked, timestamp }
 
+    console.log('newState: ', newState)
     return newState
   }
 
   try {
-    const provider = MetamaskProvider
+    const provider = Provider
 
     provider.initialize()
 
     // dispatch action to save provider name and priority
-    dispatchers.regProvider(provider.providerName, { priority: provider.priority })
+    dispatchers.regProvider(provider.name, {})
 
     const newState = await grabProviderState(provider)
 
-    dispatchers.updateProvider(provider.providerName, { ...newState })
+    dispatchers.updateProvider(provider.name, { ...newState })
   } catch (error) {
     console.error(error.message || error)
   }

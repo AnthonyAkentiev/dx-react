@@ -98,6 +98,7 @@ const setActiveProviderHelper = (dispatch: Dispatch<any>, state: State) => {
   try {
     // determine new provider
     const newProvider = findDefaultProvider(state)
+    console.log('newProvider: ', newProvider)
     if (newProvider) {
       dispatch(batchActions([
         setActiveProvider(newProvider.name),
@@ -177,13 +178,16 @@ export const updateMainAppState = (condition?: any) => async (dispatch: Dispatch
 export const initDutchX = () => async (dispatch: Dispatch<any>, getState: () => State) => {
   const state = getState(),
     {
-      blockchain: { providers },
+      blockchain, blockchain: { providers },
       tokenList: { combinedTokenList: tokenAddresses },
     } = state
 
+  console.log('blockchain: ', blockchain)
   // initialize
   // determine new provider
   setActiveProviderHelper(dispatch, state)
+
+  const { activeProvider } = getState().blockchain
 
   // connect
   try {
@@ -193,8 +197,11 @@ export const initDutchX = () => async (dispatch: Dispatch<any>, getState: () => 
     // runs test executions on gnosisjs
     const getConnection = async () => {
       try {
-        if (!providers.METAMASK) throw 'MetaMask not detected, please check that you have MetaMask properly installed and configured.'
-        if (!providers.METAMASK.unlocked) throw 'Wallet Provider LOCKED - please unlock your wallet'
+        // if (!providers.METAMASK) throw 'MetaMask not detected, please check that you have MetaMask properly installed and configured.'
+        // if (!providers.METAMASK.unlocked) throw 'Wallet Provider LOCKED - please unlock your wallet'
+        if (!activeProvider) throw `${activeProvider} not detected, please check that you have ${activeProvider} properly installed and configured.`
+        if (!providers[activeProvider].unlocked) throw 'Wallet Provider LOCKED - please unlock your wallet'
+
         account = await getCurrentAccount();
         ([currentBalance, tokenBalances] = await Promise.all([
           getETHBalance(account, true),

@@ -142,6 +142,7 @@ export const promisedContractsMap = init()
 
 async function init() {
   try {
+    // MetaMaskInpageProvider || EthereumProvider etc.
     const { currentProvider } = await promisedWeb3
     setProvider(currentProvider)
 
@@ -151,10 +152,10 @@ async function init() {
   // e.g. TokenETH => deployed TokenETH contract
     const deployedContracts = contractNames.reduce((acc, name, i) => {
       if (name === 'TokenFRT') {
-        acc['TokenMGN'] = instances[i]
-      } else {
-        acc[filename2ContractNameMap[name] || name] = instances[i]
-      }
+      acc['TokenMGN'] = instances[i]
+    } else {
+      acc[filename2ContractNameMap[name] || name] = instances[i]
+    }
       return acc
     }, {}) as ContractsMapWProxy
 
@@ -172,6 +173,5 @@ async function init() {
     return deployedContracts as ContractsMap
   } catch (err) {
     console.error('Contract initialisation error: ', err)
-    // throw err
   }
 }

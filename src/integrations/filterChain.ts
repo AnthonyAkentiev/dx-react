@@ -30,8 +30,8 @@ const mainFilterCB: Error1stCallback<Hash> = (error, blockHash) => {
 export const getFilter = async (options: BlockN | FilterOptions = 'latest', reuse = true): Promise<Web3Filter> => {
   if (mainFilter && reuse) return mainFilter
 
-  const { web3 } = await promisedWeb3
-  const filter = web3.eth.filter(options)
+  const { web3 } = await promisedWeb3()
+  const filter = web3.eth.filter('latest', options)
   if (reuse) mainFilter = filter
 
   return filter
@@ -66,7 +66,7 @@ export const isTxInBlock = (blockReceipt: BlockReceipt, tx:Hash) => {
 }
 
 export const getBlock = async (bl: Hash, returnTransactionObjects?: boolean) => {
-  const { getBlock } = await promisedWeb3
+  const { getBlock } = await promisedWeb3()
   return getBlock(bl, returnTransactionObjects)
 }
 
@@ -109,7 +109,7 @@ export const waitForTx = async (hash: Hash, reuse: boolean = false) => {
 
   let stopWatchingFunc: () => void, res: TransactionReceipt
 
-  const { getTransactionReceipt } = await promisedWeb3
+  const { getTransactionReceipt } = await promisedWeb3()
 
   try {
     console.log('STARTED WATCHING', hash)

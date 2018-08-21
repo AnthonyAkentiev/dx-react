@@ -132,11 +132,13 @@ export const waitForTx = async (hash: Hash, reuse: boolean = false) => {
     stopWatchingFunc()
     console.log('STOPPED WATCHING', hash)
   } catch (error) {
-    console.log('error: ', error)
+    console.error(error)
     // don't stop watching the mainFilter
     stopWatchingFunc()
     throw error
   }
+  // stopWatchingFunc()
+  console.log('STOPPED WATCHING', hash)
 
   return res
 }

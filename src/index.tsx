@@ -11,7 +11,7 @@ import App, { loadLocalSettings } from 'components/App'
 import { isNetBlocked, isGeoBlocked } from 'block'
 
 import { URLS } from 'globals'
-import fireListeners from 'integrations/events'
+// import fireListeners from 'integrations/events'
 
 /* global document */
 const rootElement = document.getElementById('root')

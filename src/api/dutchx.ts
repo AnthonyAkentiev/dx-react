@@ -1,7 +1,6 @@
 import { promisedContractsMap } from './contracts'
 import { DutchExchange, Index, Filter, ErrorFirstCallback, DutchExchangeEvents } from './types'
 import { TokenPair, Account, Balance, TokenCode } from 'types'
-import { GAS_PRICE, GAS_LIMIT_TESTING } from 'globals'
 
 let dutchXAPI: DutchExchange
 
@@ -70,7 +69,7 @@ async function init(): Promise<DutchExchange> {
     amount: Balance,
     index: Index,
     userAccount: Account,
-  ) => dx.postSellOrder(t1, t2, index, amount, { from: userAccount, gasPrice: GAS_PRICE, gas: GAS_LIMIT_TESTING })
+  ) => dx.postSellOrder(t1, t2, index, amount, { from: userAccount })
 
   postSellOrder.call = (
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
@@ -84,7 +83,7 @@ async function init(): Promise<DutchExchange> {
     amount: Balance,
     index: Index,
     userAccount: Account,
-  ) => dx.postSellOrder.sendTransaction(t1, t2, index, amount, { from: userAccount, gasPrice: GAS_PRICE, gas: GAS_LIMIT_TESTING })
+  ) => dx.postSellOrder.sendTransaction(t1, t2, index, amount, { from: userAccount })
 
   const postBuyOrder = (
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
@@ -163,7 +162,7 @@ async function init(): Promise<DutchExchange> {
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
     amount: Balance,
     userAccount: Account,
-  ) => dx.depositAndSell(t1, t2, amount, { from: userAccount, gasPrice: GAS_PRICE, gas: GAS_LIMIT_TESTING })
+  ) => dx.depositAndSell(t1, t2, amount, { from: userAccount })
 
   depositAndSell.call = (
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
@@ -175,14 +174,14 @@ async function init(): Promise<DutchExchange> {
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
     amount: Balance,
     userAccount: Account,
-  ) => dx.depositAndSell.sendTransaction(t1, t2, amount, { from: userAccount, gasPrice: GAS_PRICE, gas: GAS_LIMIT_TESTING })
+  ) => dx.depositAndSell.sendTransaction(t1, t2, amount, { from: userAccount })
 
   const claimAndWithdraw = (
     { sell: { address: t1 }, buy: { address: t2 } }: TokenPair,
     index: Index,
     amount: Balance,
     userAccount: Account,
-    ) => dx.claimAndWithdraw(t1, t2, userAccount, index, amount, { from: userAccount, gas: 4712388 })
+    ) => dx.claimAndWithdraw(t1, t2, userAccount, index, amount, { from: userAccount })
 
   const isTokenApproved = (tokenAddress: Account) => dx.approvedTokens.call(tokenAddress)
 

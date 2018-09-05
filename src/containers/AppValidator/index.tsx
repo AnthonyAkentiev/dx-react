@@ -29,7 +29,6 @@ class AppValidator extends React.Component<any> {
   }
 
   async componentWillMount() {
-    // const provider = MetamaskProvider,
     const { network, updateMainAppState, updateProvider, resetMainAppState, getTokenList, initDutchX } = this.props
 
     try {
@@ -135,9 +134,7 @@ class AppValidator extends React.Component<any> {
     </>
 
   render() {
-    const { children, unlocked, available } = this.props
-
-    if (!available) return children
+    const { children, unlocked } = this.props
 
     return this.state.online && unlocked && this.state.SET_UP_COMPLETE ? children : this.renderOfflineApp(this.state)
   }

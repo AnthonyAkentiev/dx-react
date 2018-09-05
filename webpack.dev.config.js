@@ -104,16 +104,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.less$/,
-        use: {
-          loader: 'less-loader',
-          options: {
-            strictMath: true,
-            sourceMap: true,
-          },
-        },
-      },
-      {
         test: /\.scss$/,
         use: {
           loader: 'sass-loader',
